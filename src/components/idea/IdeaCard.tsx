@@ -17,7 +17,7 @@ import { useState } from "react"
 
 const ideaCard = tv({
   slots: {
-    root: "group/card flex flex-col gap-0 transition-shadow hover:shadow-md",
+    root: "group/card flex flex-col gap-0 transition-shadow hover:shadow-md cursor-pointer",
     header: "flex items-start justify-between gap-2 pb-2",
     title: "line-clamp-2 text-sm font-semibold leading-snug text-foreground group-hover/card:text-primary transition-colors",
     meta: "flex shrink-0 flex-col items-end gap-1",
@@ -114,8 +114,8 @@ function IdeaCard({
             </div>
           </DialogHeader>
 
-          <DialogDescription asChild>
-            <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+          <DialogDescription className="text-sm text-muted-foreground leading-relaxed">
+            {description}
           </DialogDescription>
 
           <div className="flex flex-wrap gap-2">

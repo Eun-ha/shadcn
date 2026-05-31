@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { tv } from "tailwind-variants"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -26,12 +27,12 @@ const ideaForm = tv({
 })
 
 const CATEGORIES = [
-  { value: "service",    label: "서비스/제��" },
-  { value: "process",   label: "업무 프로세스" },
-  { value: "culture",   label: "조직문화" },
-  { value: "cost",      label: "비용절���" },
-  { value: "welfare",   label: "복지/환경" },
-  { value: "other",     label: "기타" },
+  { value: "service",  label: "서비스/제품" },
+  { value: "process",  label: "업무 프로세스" },
+  { value: "culture",  label: "조직문화" },
+  { value: "cost",     label: "비용절감" },
+  { value: "welfare",  label: "복지/환경" },
+  { value: "other",    label: "기타" },
 ]
 
 type IdeaFormProps = {
@@ -40,8 +41,11 @@ type IdeaFormProps = {
   className?: string
 }
 
+const MAX_CONTENT = 500
+
 function IdeaForm({ onCancel, onSubmit, className }: IdeaFormProps) {
   const s = ideaForm()
+  const [content, setContent] = useState("")
 
   return (
     <Card className={s.root({ class: className })}>
@@ -81,13 +85,15 @@ function IdeaForm({ onCancel, onSubmit, className }: IdeaFormProps) {
         <div className={s.field()}>
           <div className="flex items-center">
             <Label htmlFor="idea-content">내용 <span className="text-destructive">*</span></Label>
-            <span className={s.charCount()}>0 / 500</span>
+            <span className={s.charCount()}>{content.length} / {MAX_CONTENT}</span>
           </div>
           <Textarea
             id="idea-content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
             placeholder="현재 문제점과 개선 방향, 기대 효과를 구체적으로 작성해주세요"
             className="min-h-32 resize-none"
-            maxLength={500}
+            maxLength={MAX_CONTENT}
           />
         </div>
 

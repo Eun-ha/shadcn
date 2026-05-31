@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, type ReactNode } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
@@ -18,6 +18,7 @@ import { CategoryTag } from "@/components/idea/CategoryTag"
 
 const MOCK_IDEAS = [
   {
+    id: "1",
     title: "사내 카페테리아 운영 시간 연장 제안",
     description:
       "현재 카페테리아는 오후 2시에 마감되어 오후 늦게 근무하는 직원들이 식사를 해결하기 어렵습니다. 오후 6시까지 연장 운영하면 야근 직원의 만족도가 크게 오를 것으로 기대됩니다.",
@@ -28,6 +29,7 @@ const MOCK_IDEAS = [
     points: 5000,
   },
   {
+    id: "2",
     title: "고객 응대 매뉴얼 자동화 툴 도입",
     description:
       "반복적인 고객 문의에 대해 FAQ 기반의 챗봇을 도입하면 CS팀의 업무 부담을 줄이고 응답 속도를 높일 수 있습니다.",
@@ -37,6 +39,7 @@ const MOCK_IDEAS = [
     date: "2025.05.18",
   },
   {
+    id: "3",
     title: "월간 사내 해커톤 정례화",
     description:
       "분기별 해커톤을 월 1회 소규모로 전환하면 팀 간 협업 문화가 활성화되고 아이디어 실험 비용도 낮아집니다.",
@@ -46,6 +49,7 @@ const MOCK_IDEAS = [
     date: "2025.05.22",
   },
   {
+    id: "4",
     title: "인쇄용지 전면 재생지 전환",
     description:
       "일반 복사용지 대신 재생지로 전환하면 연간 약 15%의 용지 비용을 절감하고 ESG 목표에도 기여할 수 있습니다.",
@@ -56,7 +60,7 @@ const MOCK_IDEAS = [
   },
 ]
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="flex flex-col gap-4">
       <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{title}</h2>
@@ -111,8 +115,8 @@ export default function App() {
           {/* 목록 탭 */}
           <TabsContent value="list">
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              {MOCK_IDEAS.map((idea) => (
-                <IdeaCard key={idea.title} {...idea} />
+              {MOCK_IDEAS.map(({ id, ...idea }) => (
+                <IdeaCard key={id} {...idea} />
               ))}
             </div>
           </TabsContent>
