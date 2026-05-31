@@ -70,7 +70,7 @@ function IdeaCard({
         onClick={() => setOpen(true)}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && setOpen(true)}
+        onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); setOpen(true) } }}
       >
         <CardHeader className={s.header()}>
           <p className={s.title()}>{title}</p>
