@@ -1,11 +1,19 @@
 import { tv } from "tailwind-variants"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"
 import { StatusBadge } from "./StatusBadge"
 import { PointChip } from "./PointChip"
 import { CategoryTag } from "./CategoryTag"
 import type { StatusBadgeProps } from "./StatusBadge"
 import type { CategoryTagProps } from "./CategoryTag"
+import { useState } from "react"
 
 const ideaCard = tv({
   slots: {
@@ -51,41 +59,87 @@ function IdeaCard({
   points,
   className,
 }: IdeaCardProps) {
+  const [open, setOpen] = useState(false)
   const adopted = status === "adopted"
   const s = ideaCard({ adopted })
 
   return (
-    <Card className={s.root({ class: className })}>
-      <CardHeader className={s.header()}>
-        <p className={s.title()}>{title}</p>
-        <div className={s.meta()}>
-          <StatusBadge status={status} />
-          {adopted && points !== undefined && (
-            <PointChip points={points} variant="gold" />
-          )}
-        </div>
-      </CardHeader>
+    <>
+      <Card
+        className={s.root({ class: className })}
+        onClick={() => setOpen(true)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && setOpen(true)}
+      >
+        <CardHeader className={s.header()}>
+          <p className={s.title()}>{title}</p>
+          <div className={s.meta()}>
+            <StatusBadge status={status} />
+            {adopted && points !== undefined && (
+              <PointChip points={points} variant="gold" />
+            )}
+          </div>
+        </CardHeader>
 
-      <CardContent className={s.body()}>
-        <p className={s.description()}>{description}</p>
-        <div className={s.tags()}>
-          <CategoryTag label={category.label} color={category.color} />
-        </div>
-      </CardContent>
+        <CardContent className={s.body()}>
+          <p className={s.description()}>{description}</p>
+          <div className={s.tags()}>
+            <CategoryTag label={category.label} color={category.color} />
+          </div>
+        </CardContent>
 
-      <CardFooter className={s.footer()}>
-        <div className={s.author()}>
-          <Avatar className="size-5">
-            <AvatarImage src={author.avatarUrl} alt={author.name} />
-            <AvatarFallback className="text-[10px]">
-              {author.name.slice(0, 2)}
-            </AvatarFallback>
-          </Avatar>
-          <span className={s.authorName()}>{author.name}</span>
-        </div>
-        <span className={s.date()}>{date}</span>
-      </CardFooter>
-    </Card>
+        <CardFooter className={s.footer()}>
+          <div className={s.author()}>
+            <Avatar className="size-5">
+              <AvatarImage src={author.avatarUrl} alt={author.name} />
+              <AvatarFallback className="text-[10px]">
+                {author.name.slice(0, 2)}
+              </AvatarFallback>
+            </Avatar>
+            <span className={s.authorName()}>{author.name}</span>
+          </div>
+          <span className={s.date()}>{date}</span>
+        </CardFooter>
+      </Card>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <div className="flex items-start gap-2 pr-6">
+              <div className="flex-1">
+                <DialogTitle className="text-base leading-snug">{title}</DialogTitle>
+              </div>
+              <StatusBadge status={status} />
+            </div>
+          </DialogHeader>
+
+          <DialogDescription asChild>
+            <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+          </DialogDescription>
+
+          <div className="flex flex-wrap gap-2">
+            <CategoryTag label={category.label} color={category.color} />
+            {adopted && points !== undefined && (
+              <PointChip points={points} variant="gold" size="sm" />
+            )}
+          </div>
+
+          <div className="flex items-center justify-between border-t pt-3">
+            <div className="flex items-center gap-2">
+              <Avatar className="size-6">
+                <AvatarImage src={author.avatarUrl} alt={author.name} />
+                <AvatarFallback className="text-[10px]">
+                  {author.name.slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
+              <span className="text-xs text-muted-foreground">{author.name}</span>
+            </div>
+            <span className="text-xs text-muted-foreground">{date}</span>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
 

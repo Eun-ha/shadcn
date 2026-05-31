@@ -1,6 +1,15 @@
 import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog"
 import { IdeaCard } from "@/components/idea/IdeaCard"
 import { IdeaForm } from "@/components/idea/IdeaForm"
 import { StatusBadge } from "@/components/idea/StatusBadge"
@@ -53,6 +62,29 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{title}</h2>
       {children}
     </section>
+  )
+}
+
+function DialogGuide() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button variant="outline" onClick={() => setOpen(true)}>Dialog 열기</Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>아이디어 채택 안내</DialogTitle>
+            <DialogDescription>
+              채택된 아이디어는 검토 후 포인트가 지급됩니다. 포인트는 사내 복지몰에서 사용할 수 있습니다.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpen(false)}>닫기</Button>
+            <Button onClick={() => setOpen(false)}>확인</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
 
@@ -132,6 +164,12 @@ export default function App() {
                 <div className="max-w-sm">
                   <IdeaCard {...MOCK_IDEAS[0]} />
                 </div>
+              </Section>
+
+              <Separator />
+
+              <Section title="Dialog">
+                <DialogGuide />
               </Section>
 
             </div>
