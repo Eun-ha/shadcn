@@ -38,7 +38,7 @@ const ideaCard = tv({
   },
 })
 
-export type IdeaCardProps = {
+type IdeaCardProps = {
   title: string
   description: string
   status: StatusBadgeProps["status"]
@@ -144,3 +144,4 @@ function IdeaCard({
 }
 
 export { IdeaCard, ideaCard }
+export type { IdeaCardProps }

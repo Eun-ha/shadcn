@@ -118,4 +118,5 @@ function IdeaForm({ onCancel, onSubmit, className }: IdeaFormProps) {
   )
 }
 
-export { IdeaForm, CATEGORIES }
+export { IdeaForm, ideaForm, CATEGORIES }
+export type { IdeaFormProps }
