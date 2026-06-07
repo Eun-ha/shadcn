@@ -1,6 +1,6 @@
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -29,14 +29,14 @@ const DATA = [
   { month: "6월", 제출: 13, 채택: 6, 반려: 2 },
 ]
 
-export function IdeaLineChart() {
+export function IdeaBarChart() {
   return (
     <div className={root()}>
       <p className={title()}>월별 아이디어 현황</p>
       <p className={description()}>2025년 상반기</p>
       <ResponsiveContainer width="100%" height={280}>
-        <LineChart data={DATA} margin={{ top: 4, right: 16, left: -16, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+        <BarChart data={DATA} margin={{ top: 4, right: 16, left: -16, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" className="stroke-border" vertical={false} />
           <XAxis dataKey="month" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
           <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} allowDecimals={false} />
           <Tooltip
@@ -47,12 +47,13 @@ export function IdeaLineChart() {
               backgroundColor: "hsl(var(--popover))",
               color: "hsl(var(--popover-foreground))",
             }}
+            cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }}
           />
           <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }} />
-          <Line type="monotone" dataKey="제출" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-          <Line type="monotone" dataKey="채택" stroke="#22c55e" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-          <Line type="monotone" dataKey="반려" stroke="#ef4444" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-        </LineChart>
+          <Bar dataKey="제출" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="채택" fill="#22c55e" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="반려" fill="#ef4444" radius={[4, 4, 0, 0]} />
+        </BarChart>
       </ResponsiveContainer>
     </div>
   )
