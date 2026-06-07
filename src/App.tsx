@@ -16,6 +16,16 @@ import { StatusBadge } from "@/components/idea/StatusBadge"
 import { PointChip } from "@/components/idea/PointChip"
 import { CategoryTag } from "@/components/idea/CategoryTag"
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Calendar } from "./components/ui/Calendar"
+
 const MOCK_IDEAS = [
   {
     id: "1",
@@ -60,6 +70,8 @@ const MOCK_IDEAS = [
   },
 ]
 
+
+
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="flex flex-col gap-4">
@@ -92,8 +104,11 @@ function DialogGuide() {
   )
 }
 
+
+
 export default function App() {
   const [tab, setTab] = useState("list")
+  const [date, setDate] = useState<Date | undefined>(new Date())
 
   return (
     <div className="min-h-screen bg-background">
@@ -103,6 +118,32 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-4xl px-6 py-8 flex flex-col gap-10">
+
+        {/* Breadcrumb */}
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          className="rounded-lg border"
+        />
+
+        
 
         {/* Tabs */}
         <Tabs value={tab} onValueChange={setTab}>
