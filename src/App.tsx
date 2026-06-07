@@ -25,6 +25,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Calendar } from "./components/ui/Calendar"
+import { IdeaLineChart } from "@/components/charts/IdeaLineChart"
 
 const MOCK_IDEAS = [
   {
@@ -215,6 +216,12 @@ export default function App() {
 
               <Section title="Dialog">
                 <DialogGuide />
+              </Section>
+
+              <Separator />
+
+              <Section title="LineChart (Recharts)">
+                <IdeaLineChart />
               </Section>
 
             </div>
