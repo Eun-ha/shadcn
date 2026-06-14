@@ -28,6 +28,7 @@ import { Calendar } from "./components/ui/Calendar"
 import { IdeaBarChart } from "@/components/charts/IdeaBarChart"
 import { IdeaLineChart } from "@/components/charts/IdeaLineChart"
 import { IdeaPieChart } from "@/components/charts/IdeaPieChart"
+import SvgrExample from "@/components/SvgrExample"
 
 const MOCK_IDEAS = [
   {
@@ -236,6 +237,12 @@ export default function App() {
 
               <Section title="PieChart (Recharts)">
                 <IdeaPieChart />
+              </Section>
+
+              <Separator />
+
+              <Section title="SVG (vite-plugin-svgr)">
+                <SvgrExample />
               </Section>
 
             </div>
