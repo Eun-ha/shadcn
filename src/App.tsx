@@ -1,4 +1,6 @@
 import { useState, type ReactNode } from "react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
@@ -243,6 +245,48 @@ export default function App() {
 
               <Section title="SVG (vite-plugin-svgr)">
                 <SvgrExample />
+              </Section>
+
+              <Separator />
+
+              <Section title="Input">
+                <div className="flex flex-col gap-4 max-w-sm">
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="input-default">기본 (Default)</Label>
+                    <Input id="input-default" placeholder="텍스트를 입력하세요" />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="input-disabled">비활성화 (Disabled)</Label>
+                    <Input id="input-disabled" placeholder="입력 불가" disabled />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="input-error">오류 (Error)</Label>
+                    <Input
+                      id="input-error"
+                      placeholder="이메일을 입력하세요"
+                      error
+                      errorMessage="올바른 이메일 형식이 아닙니다."
+                      defaultValue="invalid-email"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="input-error-empty">오류 + 빈 값</Label>
+                    <Input
+                      id="input-error-empty"
+                      placeholder="필수 항목입니다"
+                      error
+                      errorMessage="이 항목은 필수입니다."
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="input-password">비밀번호 (Password)</Label>
+                    <Input id="input-password" type="password" placeholder="비밀번호 입력" />
+                  </div>
+                </div>
               </Section>
 
             </div>
