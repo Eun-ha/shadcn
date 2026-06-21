@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useRef, useState, useCallback } from "react"
 import { tv } from "tailwind-variants"
+import { cn } from "@/lib/utils"
 
 const inputVariants = tv({
   base: "flex h-10 w-full rounded-md border bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm transition-colors",
@@ -18,6 +19,7 @@ const inputVariants = tv({
 interface InputProps extends React.ComponentProps<"input"> {
   error?: boolean
   errorMessage?: string
+  suffix?: React.ReactNode
 }
 
 function Input({
@@ -26,6 +28,7 @@ function Input({
   ref: externalRef,
   error = false,
   errorMessage,
+  suffix,
   onChange,
   onScroll,
   onBlur,
@@ -59,7 +62,7 @@ function Input({
       <div className="relative">
         <input
           type={type}
-          className={inputVariants({ error, class: className })}
+          className={inputVariants({ error, class: cn(className, suffix && "pr-9") })}
           ref={mergedRef}
           aria-invalid={error}
           aria-describedby={errorMessage ? `${props.id}-error` : undefined}
@@ -87,6 +90,11 @@ function Input({
             className="pointer-events-none absolute bottom-px left-px top-px flex select-none items-center rounded-l-[5px] bg-linear-to-r from-background via-background to-transparent pl-2 pr-4 text-sm text-muted-foreground"
           >
             …
+          </span>
+        )}
+        {suffix && (
+          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center text-sm text-muted-foreground">
+            {suffix}
           </span>
         )}
       </div>

@@ -18,6 +18,8 @@ import { StatusBadge } from "@/components/idea/StatusBadge"
 import { PointChip } from "@/components/idea/PointChip"
 import { CategoryTag } from "@/components/idea/CategoryTag"
 
+import { Circle } from "lucide-react"
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -297,6 +299,21 @@ export default function App() {
                     <p className="text-xs text-muted-foreground">
                       입력값이 너비를 초과하면 앞부분이 …으로 처리되고 커서 위치를 기준으로 우측이 노출됩니다.
                     </p>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="input-percent">퍼센트 suffix (%)</Label>
+                    <Input id="input-percent" placeholder="0" suffix="%" />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="input-won">원 suffix (원)</Label>
+                    <Input id="input-won" placeholder="0" suffix="원" />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="input-icon">아이콘 suffix</Label>
+                    <Input id="input-icon" placeholder="검색어를 입력하세요" suffix={<Circle size={16} />} />
                   </div>
                 </div>
               </Section>
