@@ -1,18 +1,28 @@
 import * as React from "react"
 import { useRef, useState, useCallback } from "react"
 import { tv } from "tailwind-variants"
-import { cn } from "@/lib/utils"
 
 const inputVariants = tv({
-  base: "flex h-10 w-full rounded-md border bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm transition-colors",
+  slots: {
+    root: "flex flex-col gap-1.5",
+    wrapper: "relative",
+    input: "flex h-10 w-full rounded-md border bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm transition-colors",
+    overflowIndicator: "pointer-events-none absolute bottom-px left-px top-px flex select-none items-center rounded-l-[5px] bg-linear-to-r from-background via-background to-transparent pl-2 pr-4 text-sm text-muted-foreground",
+    suffix: "pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center text-sm text-muted-foreground",
+    errorText: "text-xs text-destructive",
+  },
   variants: {
     error: {
-      false: "border-input focus-visible:ring-ring",
-      true: "border-destructive focus-visible:ring-destructive text-destructive placeholder:text-destructive/50",
+      false: { input: "border-input focus-visible:ring-ring" },
+      true: { input: "border-destructive focus-visible:ring-destructive text-destructive placeholder:text-destructive/50" },
+    },
+    hasSuffix: {
+      true: { input: "pr-9 text-right" },
     },
   },
   defaultVariants: {
     error: false,
+    hasSuffix: false,
   },
 })
 
@@ -57,12 +67,14 @@ function Input({
     if (el) setHasLeftOverflow(el.scrollLeft > 0)
   }
 
+  const { root, wrapper, input, overflowIndicator, suffix: suffixClass, errorText } = inputVariants({ error, hasSuffix: !!suffix })
+
   return (
-    <div className="flex flex-col gap-1.5">
-      <div className="relative">
+    <div className={root()}>
+      <div className={wrapper()}>
         <input
           type={type}
-          className={inputVariants({ error, class: cn(className, suffix && "pr-9 text-right") })}
+          className={input({ class: className })}
           ref={mergedRef}
           aria-invalid={error}
           aria-describedby={errorMessage ? `${props.id}-error` : undefined}
@@ -85,21 +97,18 @@ function Input({
           {...props}
         />
         {hasLeftOverflow && (
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute bottom-px left-px top-px flex select-none items-center rounded-l-[5px] bg-linear-to-r from-background via-background to-transparent pl-2 pr-4 text-sm text-muted-foreground"
-          >
+          <span aria-hidden="true" className={overflowIndicator()}>
             …
           </span>
         )}
         {suffix && (
-          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center text-sm text-muted-foreground">
+          <span className={suffixClass()}>
             {suffix}
           </span>
         )}
       </div>
       {error && errorMessage && (
-        <p id={props.id ? `${props.id}-error` : undefined} className="text-xs text-destructive">
+        <p id={props.id ? `${props.id}-error` : undefined} className={errorText()}>
           {errorMessage}
         </p>
       )}
