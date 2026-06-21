@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react"
+import { tv } from "tailwind-variants"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -80,10 +81,18 @@ const MOCK_IDEAS = [
 
 
 
+const section = tv({
+  slots: {
+    container: "flex flex-col gap-4",
+    heading: "text-sm font-semibold text-muted-foreground uppercase tracking-wider",
+  },
+})
+
 function Section({ title, children }: { title: string; children: ReactNode }) {
+  const { container, heading } = section()
   return (
-    <section className="flex flex-col gap-4">
-      <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{title}</h2>
+    <section className={container()}>
+      <h2 className={heading()}>{title}</h2>
       {children}
     </section>
   )
