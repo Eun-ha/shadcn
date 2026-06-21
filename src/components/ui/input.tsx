@@ -62,7 +62,7 @@ function Input({
       <div className="relative">
         <input
           type={type}
-          className={inputVariants({ error, class: cn(className, suffix && "pr-9") })}
+          className={inputVariants({ error, class: cn(className, suffix && "pr-9 text-right") })}
           ref={mergedRef}
           aria-invalid={error}
           aria-describedby={errorMessage ? `${props.id}-error` : undefined}
