@@ -286,6 +286,18 @@ export default function App() {
                     <Label htmlFor="input-password">비밀번호 (Password)</Label>
                     <Input id="input-password" type="password" placeholder="비밀번호 입력" />
                   </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="input-overflow">텍스트 오버플로우 말줄임표</Label>
+                    <Input
+                      id="input-overflow"
+                      placeholder="길게 입력해 보세요"
+                      className="w-48"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      입력값이 너비를 초과하면 앞부분이 …으로 처리되고 커서 위치를 기준으로 우측이 노출됩니다.
+                    </p>
+                  </div>
                 </div>
               </Section>
 
