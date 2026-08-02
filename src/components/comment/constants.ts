@@ -1,0 +1,4 @@
+const COMMENT_INDENT_STEP = 34
+const COMMENT_CONTENT_OFFSET = 42 // avatar width(30) + root gap(12)
+
+export { COMMENT_INDENT_STEP, COMMENT_CONTENT_OFFSET }
