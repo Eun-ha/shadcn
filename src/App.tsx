@@ -34,6 +34,10 @@ import { IdeaBarChart } from "@/components/charts/IdeaBarChart"
 import { IdeaLineChart } from "@/components/charts/IdeaLineChart"
 import { IdeaPieChart } from "@/components/charts/IdeaPieChart"
 import SvgrExample from "@/components/SvgrExample"
+import { CommentList } from "@/components/comment/CommentList"
+import type { CommentData } from "@/components/comment/types"
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 
 const MOCK_IDEAS = [
   {
@@ -81,6 +85,56 @@ const MOCK_IDEAS = [
 
 
 
+function addReplyToTree(comments: CommentData[], targetId: string, reply: CommentData): CommentData[] {
+  return comments.map((c) => {
+    if (c.id === targetId) {
+      return { ...c, replies: [reply, ...(c.replies ?? [])] }
+    }
+    if (c.replies?.length) {
+      return { ...c, replies: addReplyToTree(c.replies, targetId, reply) }
+    }
+    return c
+  })
+}
+
+const MOCK_COMMENTS: CommentData[] = [
+  {
+    id: "c-1",
+    author: { name: "김민준" },
+    content: "이 아이디어 정말 좋네요! 저도 야근할 때마다 아쉬웠는데 꼭 반영됐으면 좋겠습니다.",
+    date: "2025.05.11",
+    replies: [
+      {
+        id: "c-1-r1",
+        author: { name: "이서연" },
+        content: "완전 공감이요 ㅎㅎ 총무팀에 건의해봐야겠어요.",
+        date: "2025.05.11",
+        replies: [
+          {
+            id: "c-1-r1-r1",
+            author: { name: "김민준" },
+            content: "저도 같이 건의하겠습니다!",
+            date: "2025.05.12",
+          },
+        ],
+      },
+      {
+        id: "c-1-r2",
+        author: { name: "박지훈" },
+        content: "저는 카페테리아보다 휴게실 확충이 더 시급하다고 생각해요.",
+        date: "2025.05.12",
+      },
+    ],
+  },
+  {
+    id: "c-2",
+    author: { name: "최수아" },
+    content: "예산 관련해서 검토가 필요할 것 같은데, 다음 회의 안건으로 올려주세요.",
+    date: "2025.05.13",
+    attachmentName: "예산안_검토.pdf",
+  },
+]
+
 const section = tv({
   slots: {
     container: "flex flex-col gap-4",
@@ -123,12 +177,51 @@ function DialogGuide() {
 
 
 
+let nextCommentId = 1000
+
 export default function App() {
   const [tab, setTab] = useState("list")
   const [date, setDate] = useState<Date | undefined>(new Date())
+  const [comments, setComments] = useState<CommentData[]>(MOCK_COMMENTS)
+
+  // TODO: 실제 연동 시 아래 지연/로컬 갱신 부분을 fetch 호출로 교체
+  // const res = await fetch("/api/comments", { method: "POST", body: formData })
+  // if (!res.ok) throw new Error("Failed to create comment")
+  // const created: CommentData = await res.json() // 서버가 내려준 진짜 id/author/date
+  async function handleAddComment(content: string, file?: File) {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500)) // 데모용 지연(실제 연동 시 fetch로 교체)
+      setComments((prev) => [
+        { id: `c-${nextCommentId++}`, author: { name: "나" }, content, date: "방금 전", attachmentName: file?.name },
+        ...prev,
+      ])
+    } catch (error) {
+      toast.error("댓글 등록에 실패했습니다. 잠시 후 다시 시도해주세요.")
+      throw error
+    }
+  }
+
+  async function handleAddReply(targetId: string, content: string, file?: File) {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500)) // 데모용 지연(실제 연동 시 fetch로 교체)
+      setComments((prev) =>
+        addReplyToTree(prev, targetId, {
+          id: `r-${nextCommentId++}`,
+          author: { name: "나" },
+          content,
+          date: "방금 전",
+          attachmentName: file?.name,
+        })
+      )
+    } catch (error) {
+      toast.error("답글 등록에 실패했습니다. 잠시 후 다시 시도해주세요.")
+      throw error
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background">
+      <Toaster />
       <header className="border-b px-6 py-4">
         <h1 className="text-lg font-bold">💡 사내 아이디어 공모</h1>
         <p className="text-sm text-muted-foreground">좋은 아이디어가 채택되면 포인트를 드립니다</p>
@@ -324,6 +417,14 @@ export default function App() {
                     <Label htmlFor="input-icon">아이콘 suffix</Label>
                     <Input id="input-icon" placeholder="검색어를 입력하세요" suffix={<Circle size={16} />} />
                   </div>
+                </div>
+              </Section>
+
+              <Separator />
+
+              <Section title="Comment (댓글 · 대댓글)">
+                <div className="max-w-lg">
+                  <CommentList comments={comments} onAddComment={handleAddComment} onAddReply={handleAddReply} />
                 </div>
               </Section>
 
